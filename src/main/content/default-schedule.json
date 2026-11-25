@@ -1,0 +1,21 @@
+{
+  "zh": {
+    "morningWithHome": "做早饭，在{home}里慢慢吃完",
+    "morning": "做早饭，煎蛋和吐司，慢慢吃完再收拾",
+    "workWithOccupation": "开始{occupation}的活儿，先把手头的理清楚",
+    "work": "在桌前做自己的事，先把手头的理清楚",
+    "afternoonWithHobby": "把时间留给{hobby}，不赶进度",
+    "afternoon": "在窗边坐一会儿，画点东西",
+    "dinner": "做晚饭，吃完窝在沙发上歇一会儿",
+    "eveningWithHobby": "晚上想{hobby}，慢慢来",
+    "eveningWithCity": "下楼走一圈，{city}的晚上有点凉",
+    "evening": "下楼走一圈，晚上风有点凉"
+  },
+  "en": [
+    "Made breakfast and ate it slowly",
+    "Started work at the desk, sorted out what's at hand first",
+    "Left some time for a hobby, no rushing",
+    "Made dinner, then curled up on the sofa for a while",
+    "Went for a walk downstairs; the night wind is a little chilly"
+  ]
+}

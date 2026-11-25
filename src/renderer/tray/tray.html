@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: file:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>新消息</title>
+  <link rel="stylesheet" href="./tray.css">
+</head>
+<body>
+  <main id="card" class="card">
+    <header class="head">
+      <span class="head-title">新消息</span>
+      <span id="total" class="head-total"></span>
+    </header>
+    <div id="list" class="list" role="list"></div>
+    <button id="open" type="button" class="open">打开聊天</button>
+  </main>
+  <script src="../../shared/i18n-ui-en.js"></script>
+  <script src="../../shared/i18n.js"></script>
+  <script src="./tray.js"></script>
+</body>
+</html>

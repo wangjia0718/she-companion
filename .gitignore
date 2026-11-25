@@ -1,0 +1,13 @@
+node_modules/
+data/*
+!data/holidays.json
+*.log
+dist/
+dist-test/
+*.exe
+*.blockmap
+*.onnx
+*.bin
+*.wav
+.DS_Store
+Thumbs.db

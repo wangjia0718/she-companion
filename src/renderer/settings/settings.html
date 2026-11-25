@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <!-- 只加载本地文件；缩略图允许角色立绘（file:）与内联占位；不连任何网络 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: file:; media-src 'self' file: data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>设置</title>
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="./settings.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 宽窗口：左侧竖向 Tab；窄窗口（≤899px）：自动变成顶部横向 Tab -->
+    <aside class="rail">
+      <div class="brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-name">设置</span>
+      </div>
+      <nav id="tabs" class="tabs" role="tablist" aria-label="设置分类">
+        <button type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-general" data-tab="general">通用</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-model" data-tab="model">模型</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-character" data-tab="character">角色</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-image" data-tab="image">形象</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-life" data-tab="life">生活</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-data" data-tab="data">数据</button>
+      </nav>
+      <div class="rail-foot muted">改完点「保存」</div>
+    </aside>
+
+    <div class="main">
+      <main id="content" class="content scroll-area">
+        <!-- ============ 通用 ============ -->
+        <section id="panel-general" class="panel" data-panel="general" role="tabpanel" aria-labelledby="tab-general">
+          <div class="card">
+            <h2 class="card-title">语言</h2>
+            <label class="field" for="ui-language">
+              <span class="field-label">界面语言</span>
+              <select id="ui-language" class="input">
+                <option value="zh">简体中文</option>
+                <option value="en">English</option>
+              </select>
+            </label>
+            <p class="hint">切换后界面、聊天、主动消息和日记都会使用英文；已有内容保持原样。</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">窗口</h2>
+            <label class="check" for="ui-autostart">
+              <input id="ui-autostart" type="checkbox">
+              <span>开机自启</span>
+            </label>
+            <label class="check" for="ui-always-top">
+              <input id="ui-always-top" type="checkbox">
+              <span>小人窗口置顶</span>
+            </label>
+            <label class="check" for="ui-click-through">
+              <input id="ui-click-through" type="checkbox">
+              <span>鼠标穿透（透明区域不挡桌面，但可能点不中她）</span>
+            </label>
+            <p class="hint">默认关闭：整个小窗区域都能点击/右键。开启后只有立绘上能点，部分 Windows 环境下会出现「右键没反应」，遇到就关掉它。</p>
+            <p class="hint">这三个开关即时生效，不用点保存。</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">声音</h2>
+            <label class="check" for="voice-enabled">
+              <input id="voice-enabled" type="checkbox">
+              <span>让她把话说出来</span>
+            </label>
+            <label class="field" for="voice-engine">
+              <span class="field-label">声音引擎</span>
+              <select id="voice-engine" class="input">
+                <option value="auto">自动（优先 Kokoro，缺了就往下退）</option>
+                <option value="kokoro">Kokoro（自然，8 个音色）</option>
+                <option value="piper">piper（轻快，单音色）</option>
+                <option value="sapi">系统语音（一定能用）</option>
+              </select>
+            </label>
+            <label class="field" for="voice-kokoro">
+              <span class="field-label">Kokoro 音色</span>
+              <select id="voice-kokoro" class="input"></select>
+            </label>
+            <label class="field" for="voice-rate">
+              <span class="field-label">语速 <span id="voice-rate-value">1.0×</span></span>
+              <input id="voice-rate" type="range" min="0.6" max="1.6" step="0.05" class="input">
+            </label>
+            <div class="row">
+              <button id="voice-preview" type="button" class="btn">试听</button>
+              <span id="voice-status" class="hint"></span>
+            </div>
+            <p class="hint">在本机合成，不联网，也不额外消耗模型额度。聊天里的回复和桌面小人的主动消息都会念出来。</p>
+          </div>
+        </section>
+
+        <!-- ============ 模型 ============ -->
+        <section id="panel-model" class="panel" data-panel="model" role="tabpanel" aria-labelledby="tab-model" hidden>
+          <div id="model-guide" class="guide" hidden>
+            <div class="guide-title">还没有可用的聊天模型</div>
+            <p class="guide-text">填好 API Key 并保存后，她才能回你话。已有的配置组在下面，直接补 Key 就行。</p>
+          </div>
+
+          <div class="section-head">
+            <h2 class="section-title">配置组</h2>
+            <button id="btn-add-profile" type="button" class="btn">＋ 添加配置组</button>
+          </div>
+          <div id="profile-list" class="profile-list"></div>
+
+          <div class="card">
+            <h2 class="card-title">默认使用</h2>
+            <div class="field-grid">
+              <label class="field" for="sel-chat">
+                <span class="field-label">聊天模型</span>
+                <select id="sel-chat" class="input"></select>
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <label class="field" for="sel-background">
+                <span class="field-label">后台模型</span>
+                <select id="sel-background" class="input"></select>
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <label class="field" for="sel-embedding">
+                <span class="field-label">embedding（可空）</span>
+                <select id="sel-embedding" class="input"></select>
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+            </div>
+            <p class="hint">保存后立即生效，不用重启。</p>
+          </div>
+        </section>
+
+        <!-- ============ 角色 ============ -->
+        <section id="panel-character" class="panel" data-panel="character" role="tabpanel" aria-labelledby="tab-character" hidden>
+          <div class="row">
+            <label class="field field-inline" for="sel-character">
+              <span class="field-label">正在编辑</span>
+              <select id="sel-character" class="input"></select>
+            </label>
+            <button id="btn-new-character" type="button" class="btn">＋ 新建角色</button>
+            <button id="btn-delete-character" type="button" class="btn btn-danger">删除…</button>
+          </div>
+          <p id="character-empty" class="hint" hidden>还没有角色，先点「＋ 新建角色」。</p>
+
+          <div id="character-form" hidden>
+            <div class="card">
+              <h2 class="card-title">人格</h2>
+              <label class="field" for="char-name">
+                <span class="field-label">名字</span>
+                <input id="char-name" class="input" type="text" maxlength="24" autocomplete="off">
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <label class="field" for="char-traits">
+                <span class="field-label">性格（每行一个）</span>
+                <textarea id="char-traits" class="input" rows="3" placeholder="温柔&#10;有点懒"></textarea>
+              </label>
+              <label class="field" for="char-speech">
+                <span class="field-label">说话方式</span>
+                <textarea id="char-speech" class="input" rows="2" placeholder="短句、口语、不用书面词"></textarea>
+              </label>
+              <label class="field" for="char-catchphrases">
+                <span class="field-label">口头禅（每行一个）</span>
+                <textarea id="char-catchphrases" class="input" rows="2" placeholder="嗯…"></textarea>
+              </label>
+              <label class="field" for="char-background">
+                <span class="field-label">背景</span>
+                <textarea id="char-background" class="input" rows="3" placeholder="她是从哪来的、经历过什么"></textarea>
+              </label>
+              <label class="field" for="char-relationship">
+                <span class="field-label">和你的关系</span>
+                <textarea id="char-relationship" class="input" rows="2" placeholder="认识很久的朋友，说话不用客套"></textarea>
+              </label>
+              <label class="field" for="char-boundaries">
+                <span class="field-label">边界（每行一个）</span>
+                <textarea id="char-boundaries" class="input" rows="3" placeholder="不编造没发生过的事"></textarea>
+              </label>
+              <label class="field" for="char-likes">
+                <span class="field-label">喜欢（每行一个）</span>
+                <textarea id="char-likes" class="input" rows="2"></textarea>
+              </label>
+              <label class="field" for="char-dislikes">
+                <span class="field-label">不喜欢（每行一个）</span>
+                <textarea id="char-dislikes" class="input" rows="2"></textarea>
+              </label>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">生日与内在</h2>
+              <div class="field-grid">
+                <label class="field" for="char-birth-year">
+                  <span class="field-label">生日 · 年（可空）</span>
+                  <input id="char-birth-year" class="input" type="number" min="1900" max="2100" step="1" placeholder="可不填">
+                </label>
+                <label class="field" for="char-birth-month">
+                  <span class="field-label">月</span>
+                  <input id="char-birth-month" class="input" type="number" min="1" max="12" step="1" placeholder="6">
+                </label>
+                <label class="field" for="char-birth-day">
+                  <span class="field-label">日</span>
+                  <input id="char-birth-day" class="input" type="number" min="1" max="31" step="1" placeholder="15">
+                </label>
+              </div>
+              <p class="hint">按阳历（公历）填，只用来算性格和生日当天的日程；聊天里不会主动提。</p>
+
+              <div class="row">
+                <button id="btn-generate-inner" type="button" class="btn">根据生日生成</button>
+                <span id="inner-source" class="hint"></span>
+              </div>
+              <div id="inner-profile-error" class="field-error" role="alert" hidden></div>
+
+              <div class="inner-profile">
+                <div class="inner-dim">
+                  <span class="inner-dim-label">社交</span>
+                  <input id="inner-social" class="inner-range" type="range" min="0" max="100" step="1" value="50">
+                  <output id="inner-social-value" class="inner-dim-value">50</output>
+                </div>
+                <div class="inner-dim">
+                  <span class="inner-dim-label">规律</span>
+                  <input id="inner-structure" class="inner-range" type="range" min="0" max="100" step="1" value="50">
+                  <output id="inner-structure-value" class="inner-dim-value">50</output>
+                </div>
+                <div class="inner-dim">
+                  <span class="inner-dim-label">开放</span>
+                  <input id="inner-openness" class="inner-range" type="range" min="0" max="100" step="1" value="50">
+                  <output id="inner-openness-value" class="inner-dim-value">50</output>
+                </div>
+                <div class="inner-dim">
+                  <span class="inner-dim-label">节奏</span>
+                  <input id="inner-pace" class="inner-range" type="range" min="0" max="100" step="1" value="50">
+                  <output id="inner-pace-value" class="inner-dim-value">50</output>
+                </div>
+                <div class="inner-dim">
+                  <span class="inner-dim-label">表达</span>
+                  <input id="inner-expressiveness" class="inner-range" type="range" min="0" max="100" step="1" value="50">
+                  <output id="inner-expressiveness-value" class="inner-dim-value">50</output>
+                </div>
+              </div>
+              <details class="inner-guide">
+                <summary>这五项分别影响什么？</summary>
+                <div class="inner-guide-body">
+                  <p><b>社交</b>：愿不愿意见人、去人多的地方。<br>
+                    0–54 基本不主动社交；55–59 会串门、见熟人；60–69 会去人多的场合；70–100 愿意参加聚会（还要开放 ≥60）。</p>
+                  <p><b>规律</b>：作息和日程时间的固定程度。<br>
+                    0–30 很随意，前后能差 45 分钟；31–69 正常浮动，约 25 分钟；70–100 很固定，基本按点（±10 分钟）。</p>
+                  <p><b>开放</b>：愿不愿意尝试新东西、独自出门。<br>
+                    0–44 基本不独自出门；45–59 会独自出门；60–100 更愿意去新地方、试新活动。</p>
+                  <p><b>节奏</b>：一天安排几件事。<br>
+                    0–30 三件，慢慢来；31–69 四件；70–100 五件，还会多一件顺路的小事。</p>
+                  <p><b>表达</b>：主动说话的长度和频率。<br>
+                    0–30 更短（约 28 字），每天少发一条，也不做回访；31–69 约 34 字；70–100 约 40 字。</p>
+                  <p class="hint">改完点「保存角色」；新的日程会按新分数重新抽样。</p>
+                  <p class="hint">这套分数是行为参数，不是心理测评量表；名字借用了大五人格 / 气质研究的说法，阈值和组合是本项目定的。</p>
+                </div>
+              </details>
+              <p class="hint">默认按生日自动算，可手改。</p>
+
+              <label class="field" for="char-inner-traits">
+                <span class="field-label">内在行为（每行一条，5–8 条）</span>
+                <textarea id="char-inner-traits" class="input" rows="4" placeholder="不喜欢人多的地方&#10;答应的事会记很久"></textarea>
+              </label>
+              <label class="field" for="char-inner-boundaries">
+                <span class="field-label">内在边界（每行一条）</span>
+                <textarea id="char-inner-boundaries" class="input" rows="3" placeholder="不主动提自己的生日"></textarea>
+              </label>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">生活设定</h2>
+              <div class="field-grid">
+                <label class="field" for="char-city">
+                  <span class="field-label">城市</span>
+                  <input id="char-city" class="input" type="text" maxlength="40" placeholder="杭州">
+                </label>
+                <label class="field" for="char-home">
+                  <span class="field-label">住处</span>
+                  <input id="char-home" class="input" type="text" maxlength="60" placeholder="老小区两居室">
+                </label>
+                <label class="field" for="char-occupation">
+                  <span class="field-label">职业</span>
+                  <input id="char-occupation" class="input" type="text" maxlength="40" placeholder="自由插画师">
+                </label>
+                <label class="field" for="char-tone">
+                  <span class="field-label">生活基调</span>
+                  <input id="char-tone" class="input" type="text" maxlength="40" placeholder="松弛">
+                </label>
+              </div>
+              <label class="field" for="char-hobbies">
+                <span class="field-label">爱好（每行一个）</span>
+                <textarea id="char-hobbies" class="input" rows="3"></textarea>
+              </label>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">长期项目</h2>
+              <p class="hint">读书、练琴、画画这类一直在做的事。有进行中的项目时，晚间日程会隔天安排一次推进；完成后会写进她的记忆。</p>
+              <ul id="project-list" class="project-list"></ul>
+              <p id="project-empty" class="hint">还没有项目。</p>
+
+              <div class="field-grid">
+                <label class="field" for="project-title">
+                  <span class="field-label">标题</span>
+                  <input id="project-title" class="input" type="text" maxlength="60" placeholder="读完《夜晚的潜水艇》" autocomplete="off">
+                </label>
+                <label class="field" for="project-kind">
+                  <span class="field-label">类型</span>
+                  <select id="project-kind" class="input">
+                    <option value="book">读书</option>
+                    <option value="music">练琴</option>
+                    <option value="drawing">画画</option>
+                    <option value="fitness">健身</option>
+                    <option value="other">其他</option>
+                  </select>
+                </label>
+              </div>
+              <div class="field-grid">
+                <label class="field" for="project-progress">
+                  <span class="field-label">当前进度</span>
+                  <input id="project-progress" class="input" type="number" min="0" step="1" value="0">
+                </label>
+                <label class="field" for="project-total">
+                  <span class="field-label">目标</span>
+                  <input id="project-total" class="input" type="number" min="1" step="1" value="10">
+                </label>
+                <label class="field" for="project-unit">
+                  <span class="field-label">单位</span>
+                  <select id="project-unit" class="input">
+                    <option value="页">页</option>
+                    <option value="章">章</option>
+                    <option value="首">首</option>
+                    <option value="次">次</option>
+                    <option value="张">张</option>
+                  </select>
+                </label>
+              </div>
+              <div class="row">
+                <button id="btn-project-save" type="button" class="btn">添加项目</button>
+                <button id="btn-project-cancel" type="button" class="btn" hidden>取消编辑</button>
+                <span id="project-hint" class="hint"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 形象 ============ -->
+        <section id="panel-image" class="panel" data-panel="image" role="tabpanel" aria-labelledby="tab-image" hidden>
+          <p id="image-empty" class="hint" hidden>还没有角色，先到「角色」Tab 新建一个。</p>
+          <div id="image-body" hidden>
+            <div class="row">
+              <label class="field field-inline" for="sel-pack">
+                <span class="field-label">形象包</span>
+                <select id="sel-pack" class="input"></select>
+              </label>
+              <button id="btn-new-pack" type="button" class="btn">＋ 新建</button>
+              <button id="btn-rename-pack" type="button" class="btn">重命名…</button>
+              <button id="btn-delete-pack" type="button" class="btn btn-danger">删除…</button>
+            </div>
+
+            <div class="notice">
+              <strong>需要透明背景 PNG。</strong>
+              立绘显示在透明小窗里，白底/黑底图片会出现一块方框。idle（站立）是必需帧，其余帧缺省时回落到 idle。
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">缩放与朝向</h2>
+              <div class="scale-row">
+                <div class="scale-control">
+                  <div class="scale-label">大小 <output id="scale-value">1.00×</output></div>
+                  <input id="scale-range" type="range" min="0.2" max="2" step="0.05" value="1" aria-describedby="scale-hint">
+                  <p id="scale-hint" class="hint">0.2× – 2.0×，拖动即时预览并同步到小人窗。</p>
+                  <label class="check" for="flip-toggle" style="margin-top: 10px;">
+                    <input id="flip-toggle" type="checkbox">
+                    <span>水平翻转（左右镜像，让她朝另一边）</span>
+                  </label>
+                </div>
+                <div class="scale-preview" aria-label="缩放预览">
+                  <div class="scale-preview-stage">
+                    <img id="scale-preview-image" alt="缩放预览" hidden>
+                    <div id="scale-preview-empty" class="scale-preview-empty">还没有 idle 立绘</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-head">
+              <h2 class="section-title">帧位</h2>
+            </div>
+            <div id="frames-grid" class="frames-grid"></div>
+          </div>
+        </section>
+
+        <!-- ============ 生活 ============ -->
+        <section id="panel-life" class="panel" data-panel="life" role="tabpanel" aria-labelledby="tab-life" hidden>
+          <div class="card">
+            <label class="check" for="life-enabled">
+              <input id="life-enabled" type="checkbox">
+              <span>让她自己过日子（生成日程、偶尔主动找你）</span>
+            </label>
+            <p class="hint">关掉之后不再生成日程、事件、日记，也不会主动发消息；聊天仍然正常。</p>
+            <div class="field-grid">
+              <label class="field" for="life-from">
+                <span class="field-label">静默开始</span>
+                <input id="life-from" class="input" type="time">
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <label class="field" for="life-to">
+                <span class="field-label">静默结束</span>
+                <input id="life-to" class="input" type="time">
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <p class="hint field-wide">这两个时间之间她不会主动发消息，可以跨夜（例如 23:00–08:00）。</p>
+              <div class="field field-wide">
+                <span class="field-label">每周主动消息数量范围（0–63）</span>
+                <div class="range-row">
+                  <div class="range-item">
+                    <input id="life-proactive-min" class="input" type="number" min="0" max="63" step="1" aria-label="每周主动消息数量下限">
+                    <span class="field-error" role="alert" hidden></span>
+                  </div>
+                  <span class="range-sep" aria-hidden="true">–</span>
+                  <div class="range-item">
+                    <input id="life-proactive-max" class="input" type="number" min="0" max="63" step="1" aria-label="每周主动消息数量上限">
+                    <span class="field-error" role="alert" hidden></span>
+                  </div>
+                  <span class="range-unit">条 / 周</span>
+                </div>
+                <p class="hint">她每周主动找你的消息总条数。每周在范围内加权取一个整数（0 = 这周完全不主动），再随机分到本周若干天：次数少时可能只挑一两天、某天连发两三条；次数多时才铺满整周。只排进她当天的作息空档（静默时段除外，活动前后留缓冲），单条至少隔 30 分钟；受空档和触发条件限制，实际发送可能少于目标。上限 63 = 7 天 × 每天最多 9 条（受可用触发源限制）。</p>
+              </div>
+              <label class="field" for="life-budget">
+                <span class="field-label">每日后台调用上限（0–100）</span>
+                <input id="life-budget" class="input" type="number" min="0" max="100" step="1">
+                <span class="hint">记忆抽取、生成日程、写日记、主动消息等后台调用都算一次；用完当天不再调用模型。</span>
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+              <label class="field" for="life-diary-hour">
+                <span class="field-label">写日记时间（0–23 点）</span>
+                <input id="life-diary-hour" class="input" type="number" min="0" max="23" step="1">
+                <span class="hint">到点后、app 开着时才会写当天日记。</span>
+                <span class="field-error" role="alert" hidden></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">聊天结束语</h2>
+            <label class="field" for="life-silent-end">
+              <span class="field-label">发这些内容时不再回复（每行一条）</span>
+              <textarea id="life-silent-end" class="input" rows="3" placeholder="安～&#10;安~"></textarea>
+            </label>
+            <p class="hint">留空表示不启用；匹配时会忽略末尾的句号、感叹号。</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">今天</h2>
+            <dl id="life-today" class="usage-list"></dl>
+            <label class="check" for="life-useweather">
+              <input id="life-useweather" type="checkbox">
+              <span>使用真实天气（Open-Meteo）</span>
+            </label>
+            <p class="hint">关闭后只用季节概率估算天气。真实天气按角色所在城市查询，最多等 3 秒；失败会自动退回季节估算。</p>
+            <label class="check" for="life-schedule-review" style="margin-top: 10px;">
+              <input id="life-schedule-review" type="checkbox">
+              <span>生成日程后让模型自检一次（每天多 1 次调用）</span>
+            </label>
+            <p class="hint">自检会检查时间与文案是否矛盾、天气/出门是否冲突、相邻两条是否重复；发现问题只改文案，不增删条目。关掉可省一次后台调用。</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">今日用量</h2>
+            <dl id="usage-list" class="usage-list"></dl>
+            <p class="hint">只读，按本地日期统计；这里的数据不会因为保存而改变。</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">她现在的状态</h2>
+            <div id="state-bars" class="state-bars"></div>
+            <p id="state-summary" class="hint">—</p>
+            <p class="hint">只读：心情、体力、专注会随日程、事件和聊天慢慢变化。</p>
+          </div>
+        </section>
+
+        <!-- ============ 数据 ============ -->
+        <section id="panel-data" class="panel" data-panel="data" role="tabpanel" aria-labelledby="tab-data" hidden>
+          <div class="card">
+            <h2 class="card-title">数据目录</h2>
+            <div class="path-row">
+              <code id="data-dir" class="path"></code>
+              <button id="btn-open-dir" type="button" class="btn">打开目录</button>
+            </div>
+            <div class="row">
+              <button id="btn-export" type="button" class="btn">导出全部数据…</button>
+            </div>
+            <p class="hint">导出为文件夹：选择目标位置后，会递归复制 data/ 到 <code>she-export-年月日-时分</code>。项目没有 zip 依赖，所以不是压缩包。</p>
+            <p class="hint"><strong>导出文件已移除 API Key，迁移后需重新填写密钥。</strong></p>
+            <div id="export-error" class="field-error" role="alert" hidden></div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">会话</h2>
+            <button id="btn-clear-chat" type="button" class="btn">清空当前角色会话…</button>
+            <p class="hint">只删聊天记录，她的记忆和形象都保留。</p>
+          </div>
+
+          <div class="card danger-zone">
+            <h2 class="card-title">危险区</h2>
+            <p class="danger-text">删除当前角色会连同她的记忆、聊天记录、形象一起删掉，无法恢复。</p>
+            <button id="btn-danger-delete" type="button" class="btn btn-danger">删除当前角色…</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-foot">
+        <div id="foot-hint" class="foot-hint muted"></div>
+        <button id="btn-save" type="button" class="btn btn-primary">保存</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- 确认 / 输入弹层（不用 window.confirm / prompt） -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message">
+      <div id="modal-title" class="modal-title">确认</div>
+      <p id="modal-message" class="modal-message"></p>
+      <label id="modal-field" class="field" hidden>
+        <span id="modal-field-label" class="field-label">名字</span>
+        <input id="modal-input" class="input" type="text" autocomplete="off">
+      </label>
+      <div id="modal-error" class="field-error" role="alert" hidden></div>
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn">取消</button>
+        <button id="modal-alt" type="button" class="btn" hidden>放弃修改</button>
+        <button id="modal-ok" type="button" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../shared/i18n-ui-en.js"></script>
+  <script src="../../shared/i18n.js"></script>
+  <script src="../shared/voice.js"></script>
+  <script src="./settings.js"></script>
+</body>
+</html>

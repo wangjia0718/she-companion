@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <!-- 只加载本地文件；图片允许角色立绘（file:）和内联占位；不连任何网络 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: file:; media-src 'self' file: data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>和她聊天</title>
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="../shared/bubble.css">
+  <link rel="stylesheet" href="./chat.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 左栏：角色列表 -->
+    <aside class="rail" aria-label="角色列表">
+      <div class="rail-head">她</div>
+      <div id="rail-list" class="rail-list" role="list"></div>
+      <div class="rail-foot">
+        <button id="btn-new-char" type="button" class="new-char">＋ 新建角色</button>
+      </div>
+    </aside>
+
+    <!-- 中栏：对话 -->
+    <main class="chat" aria-label="对话">
+      <header class="topbar">
+        <div class="who">
+          <span id="top-name" class="who-name">还没有角色</span>
+          <span id="wave" class="wave" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </span>
+          <span id="top-sub" class="who-sub"></span>
+          <button id="top-mood" type="button" class="who-chip" title="打开设置" aria-label="她的心情，点击打开设置" hidden>平静</button>
+          <button id="top-model" type="button" class="who-chip who-model" title="打开设置" aria-label="当前模型，点击打开设置" hidden>未配置模型</button>
+        </div>
+        <div class="top-actions">
+          <button id="btn-drawer" type="button" class="icon-btn" aria-label="打开侧栏" aria-expanded="false" title="记忆 / 今天 / 日记">▤</button>
+          <button id="btn-more" type="button" class="icon-btn" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false" title="更多">⋯</button>
+          <div id="more-menu" class="menu" role="menu" aria-label="更多操作" hidden>
+            <button type="button" role="menuitem" data-action="stop" id="menu-stop">停止生成</button>
+            <button type="button" role="menuitem" data-action="export">导出当前会话（.md）</button>
+            <button type="button" role="menuitem" class="danger" data-action="clear">清空本会话…</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 首次引导：三步卡片（onboarding.js 渲染；不挡输入框，可以先直接聊） -->
+      <div id="onboarding" class="onboarding" aria-label="首次使用引导" hidden></div>
+
+      <div id="messages" class="messages scroll-area" role="log" aria-live="polite" aria-relevant="additions text" tabindex="0"></div>
+
+      <div id="empty" class="empty" hidden>
+        <div class="empty-card">
+          <div id="empty-title" class="empty-title">先到设置里创建角色</div>
+          <div id="empty-desc" class="empty-desc">创建之后就能跟她说话了。</div>
+          <button id="empty-action" type="button" class="btn btn-primary">去设置</button>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="composer-inner">
+          <textarea id="input" class="composer-input" rows="1" placeholder="和她说点什么…（Enter 发送，Shift+Enter 换行）" aria-label="输入消息"></textarea>
+          <button id="send" type="button" class="send" disabled>发送</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- 右侧抽屉：记忆 / 今天 / 日记（默认收起，浮在对话上方，不挤窄中栏） -->
+    <aside id="drawer" class="drawer" aria-label="侧栏" aria-hidden="true">
+      <div class="drawer-head">
+        <div class="drawer-tabs" role="tablist" aria-label="侧栏内容">
+          <button type="button" class="drawer-tab is-active" role="tab" aria-selected="true" data-tab="memory">记忆</button>
+          <button type="button" class="drawer-tab" role="tab" aria-selected="false" data-tab="today">今天</button>
+          <button type="button" class="drawer-tab" role="tab" aria-selected="false" data-tab="diary">日记</button>
+        </div>
+        <button id="btn-drawer-close" type="button" class="icon-btn" aria-label="收起侧栏">×</button>
+      </div>
+      <div id="drawer-body" class="drawer-body"></div>
+      <div class="drawer-foot">
+        <button id="btn-drawer-settings" type="button" class="btn">去设置</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 新建角色：Electron 不支持 window.prompt，这里用最简弹层 -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div id="modal-title" class="modal-title">新建角色</div>
+      <label class="modal-label" for="modal-input">她的名字</label>
+      <input id="modal-input" class="modal-input" type="text" maxlength="24" placeholder="比如：小满" autocomplete="off">
+      <div id="modal-error" class="modal-error" role="alert" hidden></div>
+      <div class="modal-actions">
+        <button id="modal-cancel" type="button" class="btn">取消</button>
+        <button id="modal-ok" type="button" class="btn btn-primary">创建</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="../../shared/i18n-ui-en.js"></script>
+  <script src="../../shared/i18n.js"></script>
+  <script src="../shared/markdown-lite.js"></script>
+  <script src="../shared/voice.js"></script>
+  <script src="./chat-stream.js"></script>
+  <script src="./onboarding.js"></script>
+  <script src="./chat.js"></script>
+</body>
+</html>

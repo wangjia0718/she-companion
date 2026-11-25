@@ -1,0 +1,56 @@
+{
+  "name": "she-companion",
+  "version": "0.1.44",
+  "private": true,
+  "description": "桌面陪伴「她」：透明立绘、跨天记忆、自己过日子",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "selftest": "electron . --selftest",
+    "smoke": "electron . --smoke"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.she.companion",
+    "productName": "她",
+    "copyright": "Copyright © 2026",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "package.json",
+      "src/**/*",
+      "data/holidays.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "她",
+      "artifactName": "She-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
+    },
+    "artifactName": "She-Setup-${version}.exe"
+  },
+  "author": "opencode"
+}

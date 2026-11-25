@@ -1,0 +1,231 @@
+/* 共享主题（Task 11）：暖色系配色与基础元素。
+   主色 #C98B5E · 背景 #FAF7F2 · 卡片 #FFF · 正文 #3A322C · 次要 #8A7E74 · 分割 #EDE4D8
+   只放多个窗口都要用的东西；单个窗口的布局写在各自的 css 里。 */
+
+:root {
+  --bg: #FAF7F2;
+  --bg-rail: #F6F1E9;
+  --card: #FFFFFF;
+  --card-soft: #FFFDF9;
+  --accent: #C98B5E;
+  --accent-strong: #B2764B;
+  --accent-soft: #F3E3D4;
+  --accent-line: #E4CBB4;
+  --ink: #3A322C;
+  --ink-soft: #8A7E74;
+  --ink-faint: #B9AEA3;
+  --divider: #EDE4D8;
+  --danger: #B4553F;
+  --danger-soft: #FBEDE7;
+  --danger-line: #EFCFC2;
+  --radius-lg: 18px;
+  --radius: 14px;
+  --radius-sm: 12px;
+  --shadow: 0 8px 24px rgba(58, 50, 44, 0.08);
+  --shadow-sm: 0 1px 3px rgba(58, 50, 44, 0.06);
+  --font: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "SFMono-Regular", ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* 键盘可达性：只在键盘聚焦时出现描边，鼠标点击不闪 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 按钮 ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.btn:disabled:hover {
+  border-color: var(--divider);
+  background: var(--card);
+}
+
+.btn-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+}
+
+.btn-danger {
+  border-color: var(--danger-line);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 18px;
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.icon-btn[aria-expanded="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* ---------- 小标签 / 分隔 ---------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.tag-muted {
+  background: #F3EFE9;
+  color: var(--ink-soft);
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.divider-line {
+  height: 1px;
+  background: var(--divider);
+}
+
+/* ---------- 滚动条（Chromium） ---------- */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+  background-color: #DCCFC0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #CDBCA9;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,547 @@
+[
+  {
+    "category": "home",
+    "text": "在窗边坐了一会儿，什么都没做",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 4
+  },
+  {
+    "category": "home",
+    "text": "煮了一锅汤，慢慢等它咕嘟",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 12
+  },
+  {
+    "category": "home",
+    "text": "把常看的那本书翻到折角那页",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 5
+  },
+  {
+    "category": "home",
+    "text": "窝在沙发上听了一会儿歌",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 3
+  },
+  {
+    "category": "home",
+    "text": "把茶几上的杂物归了归位，顺手把桌面擦了一遍",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 10
+  },
+  {
+    "category": "home",
+    "text": "给阳台上的绿植浇了水",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 4
+  },
+  {
+    "category": "home",
+    "text": "泡了壶茶，坐回桌前发呆",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 3
+  },
+  {
+    "category": "home",
+    "text": "把洗好的衣服一件件晾起来",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 6
+  },
+  {
+    "category": "home",
+    "text": "找了部老电影看，中途睡着了一会儿",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 5
+  },
+  {
+    "category": "home",
+    "text": "煮了碗面，加了一个蛋",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 8
+  },
+  {
+    "category": "home",
+    "text": "坐在灯下把手机里的旧照片翻了一遍",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 3
+  },
+  {
+    "category": "chore",
+    "text": "把地拖了一遍，水桶换了两次",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 18
+  },
+  {
+    "category": "chore",
+    "text": "整理了衣柜，翻出去年的围巾",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 15
+  },
+  {
+    "category": "chore",
+    "text": "去楼下取了快递，顺手扔了垃圾",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 8
+  },
+  {
+    "category": "chore",
+    "text": "把冰箱里过期的调料清了出来",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 10
+  },
+  {
+    "category": "chore",
+    "text": "擦了窗台，抹布洗了三回",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 12
+  },
+  {
+    "category": "chore",
+    "text": "换了床单，铺得很平整",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 10
+  },
+  {
+    "category": "chore",
+    "text": "把桌上的纸和笔归了类",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 6
+  },
+  {
+    "category": "selfcare",
+    "text": "洗了头发，吹到半干",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 8
+  },
+  {
+    "category": "selfcare",
+    "text": "剪了指甲，顺手修了修",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 2
+  },
+  {
+    "category": "selfcare",
+    "text": "闭上眼休息了二十分钟，醒来有点懵",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 2
+  },
+  {
+    "category": "selfcare",
+    "text": "做了十分钟拉伸，肩颈松了点",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 6
+  },
+  {
+    "category": "selfcare",
+    "text": "认真涂了护手霜，手背不再起皮",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 2
+  },
+  {
+    "category": "selfcare",
+    "text": "慢慢洗了把脸，敷了会儿热毛巾",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 3
+  },
+  {
+    "category": "selfcare",
+    "text": "洗了个澡，换上干净的衣服",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 5
+  },
+  {
+    "category": "discovery",
+    "text": "在抽屉最里面翻到一张旧车票",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 2
+  },
+  {
+    "category": "discovery",
+    "text": "发现楼下换了新的招牌",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 2
+  },
+  {
+    "category": "discovery",
+    "text": "试了一家新开的小店，味道一般",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 6,
+    "needs": {
+      "opennessMin": 40
+    }
+  },
+  {
+    "category": "discovery",
+    "text": "听到一首没听过的歌，单曲循环了很久",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 2
+  },
+  {
+    "category": "discovery",
+    "text": "路过时看到一只猫在窗台上打盹",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 2
+  },
+  {
+    "category": "discovery",
+    "text": "翻到一本没读完的旧书，从头看起",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 3
+  },
+  {
+    "category": "discovery",
+    "text": "楼下有人搬家，纸箱堆了一地",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 1
+  },
+  {
+    "category": "discovery",
+    "text": "在便利店买到最后一瓶喜欢的饮料",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 3
+  },
+  {
+    "category": "discovery",
+    "text": "发现常走的那条路有棵开花的树",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 2
+  },
+  {
+    "category": "solo_out",
+    "text": "去街角书店翻半小时画册",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 10,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "一个人去看了场下午场电影",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 12,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "沿着河边走了很久，没戴耳机",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 14,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "坐公交到终点站，又坐回来",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 10,
+    "needs": {
+      "opennessMin": 55
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "在咖啡馆坐了一下午，只点了一杯",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 8,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "骑车绕了一圈，风有点凉",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 16,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "solo_out",
+    "text": "去公园的长椅上坐了会儿",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 7,
+    "needs": {
+      "opennessMin": 45
+    }
+  },
+  {
+    "category": "crowd",
+    "text": "去市集逛了一圈，人多但挺热闹",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 18,
+    "needs": {
+      "socialMin": 60
+    }
+  },
+  {
+    "category": "crowd",
+    "text": "在商场里逛到腿酸，最后什么也没买",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 20,
+    "needs": {
+      "socialMin": 60
+    }
+  },
+  {
+    "category": "crowd",
+    "text": "看了一场小型演出，站着听完",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 22,
+    "needs": {
+      "socialMin": 60
+    }
+  },
+  {
+    "category": "crowd",
+    "text": "去夜市吃了两样小吃",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 16,
+    "needs": {
+      "socialMin": 60
+    }
+  },
+  {
+    "category": "social",
+    "text": "和几个朋友吃了顿火锅，聊到很晚",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 25,
+    "needs": {
+      "socialMin": 70,
+      "opennessMin": 60
+    }
+  },
+  {
+    "category": "social",
+    "text": "去参加了朋友的生日聚会",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 28,
+    "needs": {
+      "socialMin": 70,
+      "opennessMin": 60
+    }
+  },
+  {
+    "category": "social",
+    "text": "和一群人一起去看了展",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 24,
+    "needs": {
+      "socialMin": 70,
+      "opennessMin": 60
+    }
+  },
+  {
+    "category": "social",
+    "text": "被拉去唱了歌，回来嗓子有点哑",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 30,
+    "needs": {
+      "socialMin": 70,
+      "opennessMin": 60
+    }
+  },
+  {
+    "category": "visit",
+    "text": "去看了住在附近的朋友，坐了半下午",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 16,
+    "needs": {
+      "socialMin": 55
+    }
+  },
+  {
+    "category": "visit",
+    "text": "回了趟父母家，吃了顿饭就回来",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 18,
+    "needs": {
+      "socialMin": 55
+    }
+  },
+  {
+    "category": "visit",
+    "text": "去朋友家拿东西，顺便聊了会儿",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 12,
+    "needs": {
+      "socialMin": 55
+    }
+  },
+  {
+    "category": "work",
+    "text": "到公司先泡了杯茶，把今天的事排了个序",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 12,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "work",
+    "text": "开了一上午会，记了两页笔记",
+    "solo": false,
+    "indoor": true,
+    "energyCost": 16,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "work",
+    "text": "把手头的表填完，眼睛有点花",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 14,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "work",
+    "text": "和同事在楼下吃了顿饭，聊了会儿",
+    "solo": false,
+    "indoor": false,
+    "energyCost": 10,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "work",
+    "text": "把手头的邮件一条条清完",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 12,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "work",
+    "text": "出门办点事，路上挤了一路",
+    "solo": true,
+    "indoor": false,
+    "energyCost": 10,
+    "needs": {
+      "occupation": "employed"
+    }
+  },
+  {
+    "category": "create",
+    "text": "改了两页稿子，越改越顺",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 14,
+    "needs": {
+      "occupation": "creative"
+    }
+  },
+  {
+    "category": "create",
+    "text": "起了个草稿，只画了轮廓",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 12,
+    "needs": {
+      "occupation": "creative"
+    }
+  },
+  {
+    "category": "create",
+    "text": "写了一段，又删掉一半",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 15,
+    "needs": {
+      "occupation": "creative"
+    }
+  },
+  {
+    "category": "create",
+    "text": "翻出旧画，重画了一遍",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 13,
+    "needs": {
+      "occupation": "creative"
+    }
+  },
+  {
+    "category": "create",
+    "text": "给手里的项目定了个新方向",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 10,
+    "needs": {
+      "occupation": "creative"
+    }
+  },
+  {
+    "category": "create",
+    "text": "剪了一版音频，来回听了几遍",
+    "solo": true,
+    "indoor": true,
+    "energyCost": 14,
+    "needs": {
+      "occupation": "creative"
+    }
+  }
+]

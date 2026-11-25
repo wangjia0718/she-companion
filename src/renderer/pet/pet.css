@@ -1,0 +1,298 @@
+/* 小人窗样式：透明背景、暖色奶油系（Spec 10 / 10.1）。
+   只用本地字体与内嵌样式，不引用任何外部资源。 */
+
+:root {
+  /* 顶部留给气泡的高度；窗口高度 = 立绘高 × petScale + 这个值（pet.js 里同步计算） */
+  --bubble-space: 96px;
+  --ink: #3A322C;
+  --ink-soft: #8A7E74;
+  --cream: #FAF7F2;
+  --card: #FFFDF9;
+  --accent: #C98B5E;
+  --accent-soft: #F2E3D5;
+  --divider: #EDE4D8;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+  /* 拖动由 JS 用 pet:move 驱动，不交给系统拖拽区（否则收不到 mousemove，alpha 判定会失效） */
+  -webkit-app-region: no-drag;
+}
+
+/* 立绘舞台：底部对齐、水平居中 */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: transparent;
+}
+
+/* Live2D 画布：铺满整个窗口（气泡区域可以压在上面），透明背景 */
+.live2d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.live2d[hidden] {
+  display: none;
+}
+
+.sway {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  max-width: 100%;
+  height: calc(100% - var(--bubble-space));
+  transform-origin: 50% 100%;
+  animation: sway 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 水平翻转容器：镜像放在外层，避免和呼吸/摇摆的 transform 打架 */
+.flip {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform-origin: 50% 100%;
+}
+
+.flip.is-flipped {
+  transform: scaleX(-1);
+}
+
+#pet {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: 50% 100%;
+  animation: breathe 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 立绘加载前 / 兜底占位图：别闪白，直接用暖色底 */
+#pet.is-placeholder {
+  opacity: 0.96;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.015); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-0.6deg); }
+  50% { transform: rotate(0.6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway, #pet { animation: none; }
+}
+
+/* ---------- 说话波形（朗读时出现在头顶） ---------- */
+
+.wave {
+  position: fixed;
+  left: 50%;
+  bottom: calc(100% - var(--bubble-space) - 34px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 22px;
+  padding: 4px 8px;
+  box-sizing: content-box;
+  border-radius: 999px;
+  background: rgba(255, 253, 249, 0.82);
+  box-shadow: 0 6px 16px rgba(58, 50, 44, 0.14);
+  pointer-events: none;
+  z-index: 31;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.wave.is-speaking {
+  opacity: 1;
+}
+
+.wave span {
+  display: block;
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleY(0.16);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+/* ---------- 气泡（主动消息 / 错误共用，12 秒消失） ---------- */
+
+.bubble {
+  position: fixed;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  padding: 9px 13px;
+  background: var(--card);
+  border: 1px solid var(--divider);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(58, 50, 44, 0.16);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  word-break: break-word;
+  cursor: pointer;
+  z-index: 30;
+  animation: bubble-in 180ms ease-out;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--card);
+  border-right: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+  transform: rotate(45deg);
+  border-bottom-right-radius: 2px;
+}
+
+.bubble[hidden] { display: none; }
+
+@keyframes bubble-in {
+  from { opacity: 0; transform: translate(-50%, -4px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- 无角色 / 加载失败的提示 ---------- */
+
+.hint {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  padding: 7px 12px;
+  background: rgba(255, 253, 249, 0.94);
+  border: 1px dashed var(--divider);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.hint:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.hint[hidden] { display: none; }
+
+/* ---------- 右键菜单（自定义，桌面小人用） ---------- */
+
+.menu {
+  position: fixed;
+  min-width: 132px;
+  max-width: calc(100% - 8px);
+  max-height: calc(100% - 8px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  box-shadow: 0 10px 26px rgba(58, 50, 44, 0.2);
+  font-size: 13px;
+  z-index: 40;
+  animation: menu-in 120ms ease-out;
+}
+
+.menu[hidden] { display: none; }
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.menu-item:hover,
+.menu-item.is-active {
+  background: var(--accent-soft);
+}
+
+.menu-item.is-current {
+  color: var(--accent);
+}
+
+.menu-item[aria-disabled="true"] {
+  color: #B9AEA3;
+  cursor: default;
+  background: transparent;
+}
+
+.menu-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--divider);
+}
+
+.menu-label {
+  padding: 6px 10px 2px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+.menu-check {
+  width: 12px;
+  color: var(--accent);
+  flex: 0 0 12px;
+}
